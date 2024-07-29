@@ -1,22 +1,19 @@
 import { Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { useTheme } from "tamagui";
 import CustomNavigationScreenOption from "@/constants/Styles";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   const theme = useTheme();
   const customNavigationScreenOption = CustomNavigationScreenOption();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: theme.color12?.get(),
-        tabBarInactiveTintColor: theme.color1?.get(),
+        tabBarActiveTintColor: theme.color1?.get(),
+        tabBarInactiveTintColor: theme.color?.get(),
         tabBarStyle: {
-          backgroundColor: theme.color10?.get(),
+          backgroundColor: theme.accentBackground?.get(),
           borderTopWidth: 0,
         },
         ...customNavigationScreenOption,
