@@ -1,14 +1,13 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { YStack, Text } from "tamagui";
 
 const Borrowed = () => {
-    return (
-        <View>
-            {/* Borrowed */}
-        </View>
-    );
-}
-
-const styles = StyleSheet.create({})
+  const inset = useSafeAreaInsets();
+  return (
+    <YStack paddingTop={inset.top}>
+      <Text>Borrowed</Text>
+    </YStack>
+  );
+};
 
 export default Borrowed;

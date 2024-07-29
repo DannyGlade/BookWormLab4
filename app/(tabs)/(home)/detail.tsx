@@ -1,10 +1,13 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { YStack, Text } from "tamagui";
 
 const Detail = () => {
-  return <View>{/* Detail */}</View>;
+  const inset = useSafeAreaInsets();
+  return (
+    <YStack paddingTop={inset.top}>
+      <Text>Home</Text>
+    </YStack>
+  );
 };
-
-const styles = StyleSheet.create({});
 
 export default Detail;
