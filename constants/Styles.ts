@@ -5,7 +5,7 @@ export default function CustomNavigationScreenOption() {
 
   return {
     headerStyle: {
-      backgroundColor: theme?.color10?.get(),
+      backgroundColor: theme?.background?.get(),
       // backgroundColor: 'transparent',
     },
     headerTintColor: theme?.color?.get(),
