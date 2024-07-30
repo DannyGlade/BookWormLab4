@@ -1,12 +1,13 @@
-import { Book } from '@/constants/Types'
+import { Book, parent } from '@/constants/Types'
 import useBookApi from '@/hooks/useBookApi'
 import { useRouter } from 'expo-router'
 import { H4, ListItem, YGroup, YStack, Text, Image } from 'tamagui'
 
 type BookTileProps = {
     book: Book
+    parent: parent
 }
-const BookTile = ({ book }: BookTileProps) => {
+const BookTile = ({ book, parent }: BookTileProps) => {
     const router = useRouter()
     const { fetchBookImageURL } = useBookApi()
 
@@ -18,7 +19,7 @@ const BookTile = ({ book }: BookTileProps) => {
                 gap={16}
                 onPress={() =>
                     router.push({
-                        pathname: '(tabs)/detail',
+                        pathname: `(${parent})/detail`,
                         params: { key: book.key },
                     })
                 }
