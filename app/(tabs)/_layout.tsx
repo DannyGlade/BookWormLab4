@@ -32,7 +32,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="borrowed"
+        name="(borrowed)"
         options={{
           title: "Borrowed",
           tabBarIcon: ({ color, focused }) => (
