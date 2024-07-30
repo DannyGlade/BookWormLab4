@@ -1,8 +1,12 @@
 import { Book } from '@/constants/Types'
 import useBookApi from '@/hooks/useBookApi'
+import useFirebase from '@/hooks/useFirebase'
 import { selectBookByKey } from '@/redux/booksSlice'
+import { selectBorrowedByKey } from '@/redux/borrowedSlice'
 import { Ionicons } from '@expo/vector-icons'
+import { useToastController } from '@tamagui/toast'
 import { useLocalSearchParams } from 'expo-router'
+import { useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 import {
@@ -21,29 +25,51 @@ import {
 
 const Detail = () => {
     const { key } = useLocalSearchParams()
+    const { fetchBookImageURL, fetchAuthorImageURL } = useBookApi()
+    const { addFavBook, removeFavBook } = useFirebase()
+    const toast = useToastController()
+
+    const borrowed = useSelector((state) =>
+        selectBorrowedByKey(state, key as string)
+    )
+    // console.log(borrowed)
+
     const bookDetail = useSelector((state) =>
         selectBookByKey(state, key as string)
     )
     const inset = useSafeAreaInsets()
-    const { fetchBookImageURL, fetchAuthorImageURL } = useBookApi()
+
+    const handleAddFav = () => {
+        try {
+            addFavBook(bookDetail as Book).then(() => {
+                // toast.show('Added to fav', {
+                //     type: 'success',
+                //     duration: 3000,
+                // })
+            })
+        } catch (error) {
+            console.log('Error adding to fav: ', error)
+        }
+    }
+
+    const handleRemoveFav = () => {
+        removeFavBook(bookDetail?.key as string)
+    }
 
     return (
         <ScrollView backgroundColor={'$background025'}>
-            {/* <H1> {key}</H1> */}
             {bookDetail == null && (
-                <>
-                    <YStack
-                        padding={20}
-                        gap={20}
-                        alignItems="center"
-                        height={'100%'}
-                    >
-                        <Spacer />
-                        <Spinner color={'$color'} scale={2} />
-                        <Text>Loading...</Text>
-                        <Spacer />
-                    </YStack>
-                </>
+                <YStack
+                    padding={20}
+                    gap={20}
+                    alignItems="center"
+                    height={'100%'}
+                >
+                    <Spacer />
+                    <Spinner color={'$color'} scale={2} />
+                    <Text>Loading...</Text>
+                    <Spacer />
+                </YStack>
             )}
 
             {bookDetail != null && (
@@ -71,11 +97,20 @@ const Detail = () => {
                             <Button
                                 icon={
                                     <Ionicons
-                                        name="bookmark-outline"
+                                        name={
+                                            borrowed !== undefined
+                                                ? 'bookmark'
+                                                : 'bookmark-outline'
+                                        }
                                         size={30}
                                         color={'$color'}
                                     />
                                 }
+                                onPress={() => {
+                                    borrowed !== undefined
+                                        ? handleRemoveFav()
+                                        : handleAddFav()
+                                }}
                                 chromeless
                             />
                         </XStack>
@@ -91,14 +126,6 @@ const Detail = () => {
                                                 width={100}
                                                 alignItems="center"
                                             >
-                                                {console.log(
-                                                    fetchAuthorImageURL({
-                                                        key: 'name',
-                                                        value: bookDetail
-                                                            .author_key[index],
-                                                        size: 'M',
-                                                    })
-                                                )}
                                                 <Image
                                                     src={fetchAuthorImageURL({
                                                         key: 'name',
@@ -132,51 +159,6 @@ const Detail = () => {
                                 {bookDetail.publisher?.join(', ')}
                             </Paragraph>
                         </YStack>
-
-                        {/* <XStack gap={10}>
-                            {detailedContent.Ratings.map((rating, index) => (
-                                <YStack
-                                    key={index}
-                                    gap={5}
-                                    width={'30%'}
-                                    justifyContent="space-between"
-                                >
-                                    <Text>{rating.Source}</Text>
-                                    <Text>{rating.Value}</Text>
-                                </YStack>
-                            ))}
-                        </XStack> */}
-
-                        {/* <Text>Rated: {detailedContent.Rated}</Text> */}
-
-                        {/* <Paragraph>{detailedContent.Plot}</Paragraph> */}
-
-                        {/* <Text>Release Date: {detailedContent.Released}</Text> */}
-
-                        {/* <XStack gap={5}>
-                            <YStack gap={5}>
-                                <Text>Director:</Text>
-                                <Text>Writer: </Text>
-                                <Text>Actors: </Text>
-                            </YStack>
-                            <YStack gap={5} width={'90%'}>
-                                <Text numberOfLines={1}>
-                                    {detailedContent.Director}
-                                </Text>
-                                <Text numberOfLines={1}>
-                                    {detailedContent.Writer}
-                                </Text>
-                                <Text numberOfLines={1}>
-                                    {detailedContent.Actors}
-                                </Text>
-                            </YStack>
-                        </XStack>
-                        <Text>Language: {detailedContent.Language}</Text>
-                        <Text>Country: {detailedContent.Country}</Text>
-                        <Text>Awards: {detailedContent.Awards}</Text>
-                        <Text>imdbRating: {detailedContent.imdbRating}</Text>
-                        <Text>imdbVotes: {detailedContent.imdbVotes}</Text>
-                        <Text>BoxOffice: {detailedContent.BoxOffice}</Text> */}
                     </YStack>
                 </>
             )}
