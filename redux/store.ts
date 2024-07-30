@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import booksReducer from './booksSlice'
+import borrowedReducer from './borrowedSlice'
 
 export const store = configureStore({
     reducer: {
         books: booksReducer,
+        borrowed: borrowedReducer,
     },
 })
 
