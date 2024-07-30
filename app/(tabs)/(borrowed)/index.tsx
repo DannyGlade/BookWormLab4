@@ -1,6 +1,7 @@
 import BookTile from '@/components/BookTile'
 import useFirebase from '@/hooks/useFirebase'
 import { clearBorrowed, selectBorrowed } from '@/redux/borrowedSlice'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,15 +37,14 @@ const Borrowed = () => {
             paddingHorizontal={16}
             backgroundColor={'$background025'}
         >
-            <XStack>
+            <XStack justifyContent="space-between" alignItems="center">
                 <H1>Borrowed</H1>
                 <Button
                     onPress={() => {
                         dispatch(clearBorrowed())
                     }}
-                >
-                    Clear
-                </Button>
+                    icon={<MaterialCommunityIcons name='delete-sweep' size={24} />}
+                ></Button>
             </XStack>
 
             <YGroup
