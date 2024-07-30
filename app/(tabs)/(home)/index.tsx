@@ -83,7 +83,6 @@ const Index = () => {
                     {loading ? (
                         <>
                             <Spinner size="large" />
-                            <Text>Loading...</Text>
                         </>
                     ) : (
                         bookState.docs.map((book) => (
@@ -91,12 +90,14 @@ const Index = () => {
                         ))
                     )}
                 </YGroup>
-                <PaginationControls
-                    loading={loading}
-                    page={page}
-                    setPage={setPage}
-                    bookState={bookState}
-                />
+                {bookState.numFound > 10 && (
+                    <PaginationControls
+                        loading={loading}
+                        page={page}
+                        setPage={setPage}
+                        bookState={bookState}
+                    />
+                )}
             </YStack>
         </ScrollView>
     )
