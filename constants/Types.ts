@@ -27,3 +27,5 @@ export type imageQueryType = {
     value: string
     size: 'S' | 'M' | 'L'
 }
+
+export type parent = 'home' | 'borrowed'
