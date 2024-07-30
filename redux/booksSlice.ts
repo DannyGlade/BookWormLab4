@@ -27,11 +27,11 @@ export const selectBooksState = (state: { books: searchApiResponseType }) =>
 export const selectBooks = (state: { books: searchApiResponseType }) =>
     state.books.docs
 
-export const selectBookByTitle = createSelector(
-    selectBooks,
-    (_: unknown, title: string) => title,
-    (books, title) => books.find((book) => book.title === title)
+export const selectBookByKey = createSelector(
+    [selectBooks, (_: any, key: string) => key],
+    (books, key) => books.find((book) => book.key === key)
 )
+
 export const { setBooks, clearBooks } = booksSlice.actions
 
 export default booksSlice.reducer
