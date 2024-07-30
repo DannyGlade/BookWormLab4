@@ -85,8 +85,12 @@ const Index = () => {
                             <Spinner size="large" />
                         </>
                     ) : (
-                        bookState.docs.map((book) => (
-                            <BookTile key={book.key} book={book} />
+                        bookState.docs.map((book, i) => (
+                            <BookTile
+                                key={`${book.key}${i}`}
+                                book={book}
+                                parent="home"
+                            />
                         ))
                     )}
                 </YGroup>
