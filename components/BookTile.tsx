@@ -12,7 +12,17 @@ const BookTile = ({ book }: BookTileProps) => {
 
     return (
         <YGroup.Item key={book.key}>
-            <ListItem padding={0} icon={null} gap={16}>
+            <ListItem
+                padding={0}
+                icon={null}
+                gap={16}
+                onPress={() =>
+                    router.push({
+                        pathname: '(tabs)/detail',
+                        params: { key: book.key },
+                    })
+                }
+            >
                 <Image
                     src={fetchBookImageURL({
                         key: 'id',
@@ -29,7 +39,7 @@ const BookTile = ({ book }: BookTileProps) => {
                     <YGroup>
                         <Text fontWeight={'bold'}>Authors: </Text>
                         <Text width={'60%'} numberOfLines={2}>
-                            {book.author_name.join(', ')}
+                            {book.author_name?.join(', ')}
                         </Text>
                     </YGroup>
 
