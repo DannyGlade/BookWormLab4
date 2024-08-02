@@ -73,7 +73,6 @@ const Borrowed = () => {
                             key={book.key + i}
                             book={book}
                             parent="borrowed"
-                            returnBtn={true}
                         />
                     ))
                 )}
