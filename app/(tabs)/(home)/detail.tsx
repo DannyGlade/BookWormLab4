@@ -4,7 +4,6 @@ import useFirebase from '@/hooks/useFirebase'
 import { selectBookByKey } from '@/redux/booksSlice'
 import { selectBorrowedByKey } from '@/redux/borrowedSlice'
 import { Ionicons } from '@expo/vector-icons'
-import { useToastController } from '@tamagui/toast'
 import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -27,7 +26,6 @@ const Detail = () => {
     const { key } = useLocalSearchParams()
     const { fetchBookImageURL, fetchAuthorImageURL } = useBookApi()
     const { addFavBook, removeFavBook } = useFirebase()
-    const toast = useToastController()
 
     const borrowed = useSelector((state) =>
         selectBorrowedByKey(state, key as string)
@@ -41,12 +39,7 @@ const Detail = () => {
 
     const handleAddFav = () => {
         try {
-            addFavBook(bookDetail as Book).then(() => {
-                // toast.show('Added to fav', {
-                //     type: 'success',
-                //     duration: 3000,
-                // })
-            })
+            addFavBook(bookDetail as Book).then(() => {})
         } catch (error) {
             console.log('Error adding to fav: ', error)
         }
