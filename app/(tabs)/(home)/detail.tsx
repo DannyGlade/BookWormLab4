@@ -6,6 +6,7 @@ import { selectBorrowedByKey } from '@/redux/borrowedSlice'
 import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
+import { Alert } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 import {
@@ -39,7 +40,14 @@ const Detail = () => {
 
     const handleAddFav = () => {
         try {
-            addFavBook(bookDetail as Book).then(() => {})
+            addFavBook(bookDetail as Book)
+                .then(() => {})
+                .catch((e) => {
+                    console.log('Error adding to fav: ', e)
+                    if (e.type === 'maxBooks') {
+                        Alert.alert('Error', e.message)
+                    }
+                })
         } catch (error) {
             console.log('Error adding to fav: ', error)
         }

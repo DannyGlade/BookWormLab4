@@ -41,6 +41,16 @@ export default function useFirebase() {
 
     const addFavBook = async (book: Book) => {
         return new Promise((resolve, reject) => {
+            const currentBooks = favBooks.map((b) => b.key)
+
+            if (currentBooks.length >= 3) {
+                reject({
+                    type: 'maxBooks',
+                    message: 'You can only borrow 3 books at a time',
+                })
+                return
+            }
+
             setDoc(doc(firebaseDB, ROOT, FAV_BOOKS, book.key), book)
                 .then((e) => {
                     dispatch(setBorrowed([...favBooks, book]))
@@ -70,6 +80,19 @@ export default function useFirebase() {
         })
     }
 
+    const clearFavBooks = async () => {
+        return new Promise((resolve, reject) => {
+            const q = collection(firebaseDB, ROOT, FAV_BOOKS, 'works')
+            onSnapshot(q, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    deleteDoc(doc.ref)
+                })
+                dispatch(clearBorrowed())
+                resolve({ message: 'All books removed' })
+            })
+        })
+    }
+
     const getFavBook = async (key: string) => {
         const docRef = doc(firebaseDB, ROOT, FAV_BOOKS, key)
         const docSnap = await getDoc(docRef)
@@ -81,5 +104,11 @@ export default function useFirebase() {
         }
     }
 
-    return { getFavBookList, addFavBook, removeFavBook, getFavBook }
+    return {
+        getFavBookList,
+        addFavBook,
+        removeFavBook,
+        clearFavBooks,
+        getFavBook,
+    }
 }
